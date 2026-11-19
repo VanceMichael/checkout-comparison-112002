@@ -1,0 +1,49 @@
+[
+  {
+    "record": "sampling-1",
+    "availableFrom": 1,
+    "kind": "order-study",
+    "payload": {
+      "study": "Q-61",
+      "onlyDiff": "会员条件",
+      "subjects": [
+        "普通",
+        "会员"
+      ],
+      "sku": "K2",
+      "quantity": 2,
+      "merchant": "雪岸行",
+      "fulfillment": "到店",
+      "selectedBenefit": false,
+      "currency": "CNY"
+    }
+  },
+  {
+    "record": "sampling-2",
+    "availableFrom": 1,
+    "kind": "order-study",
+    "payload": {
+      "study": "Q-62",
+      "onlyDiff": "会员条件",
+      "subjects": [
+        "普通",
+        "会员"
+      ],
+      "sku": "K2",
+      "quantity": 1,
+      "merchant": "雪岸行",
+      "fulfillment": "送货",
+      "selectedBenefit": false,
+      "currency": "CNY"
+    }
+  },
+  {
+    "record": "sampling-3",
+    "availableFrom": 3,
+    "kind": "hold",
+    "payload": {
+      "study": "Q-62",
+      "observation": "规则变更后按新计划重新对照"
+    }
+  }
+]

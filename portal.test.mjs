@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { chromium } from 'playwright';
+import { makePortal } from './portal.mjs';
+import { start } from './source-server.mjs';
+
+test('实际浏览器可见报价的新旧篮子及披露差异', async (t) => {
+  const { server, url } = await start({ portal: makePortal() });
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+  const browser = await chromium.launch({ headless: true });
+  t.after(() => browser.close());
+  const first = await browser.newPage();
+  const second = await browser.newPage();
+  await first.goto(url + '/checkout');
+  await second.goto(url + '/checkout');
+  const sent = first.waitForRequest((r) => r.url().includes('/checkout/quote?') && r.url().endsWith('seq=1'));
+  await first.getByLabel('取货').selectOption('送货');
+  await sent;
+  await first.getByLabel('取货').selectOption('到店');
+  await first.getByText('不适用', { exact: true }).waitFor();
+  await first.getByText('尚未返回', { exact: true }).waitFor();
+  assert.equal(await first.getByLabel('取货').inputValue(), '到店');
+  await second.getByLabel('买家条件').selectOption('会员');
+  await second.getByText('不适用', { exact: true }).waitFor();
+  assert.equal(await first.getByLabel('买家条件').inputValue(), '普通');
+  await fetch(url + '/control?stage=2', { method: 'POST' });
+  await second.getByLabel('取货').selectOption('送货');
+  await second.getByText('9', { exact: true }).waitFor();
+  await second.getByLabel('领取包邮权益').check();
+  await second.getByText('0', { exact: true }).waitFor();
+});
