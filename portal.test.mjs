@@ -2,10 +2,10 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { chromium } from 'playwright';
 import { makePortal } from './portal.mjs';
-import { start } from './source-server.mjs';
+import { sendJson, start } from './source-server.mjs';
 
 test('实际浏览器可见报价的新旧篮子及披露差异', async (t) => {
-  const { server, url } = await start({ portal: makePortal() });
+  const { server, url } = await start({ portal: makePortal(sendJson) });
   t.after(() => new Promise((resolve) => server.close(resolve)));
   const browser = await chromium.launch({ headless: true });
   t.after(() => browser.close());

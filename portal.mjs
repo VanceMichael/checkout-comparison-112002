@@ -1,5 +1,4 @@
 import { setTimeout } from 'node:timers/promises';
-import { sendJson } from './source-server.mjs';
 
 const page = `<!doctype html><html lang="zh"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width"><title>雪岸行 · 报价确认</title>
@@ -41,7 +40,7 @@ form.addEventListener('change', quote);
 form.querySelector('button').addEventListener('click', quote);
 </script>`;
 
-export function makePortal() {
+export function makePortal(sendJson) {
   return async (request, response, url, stage) => {
     if (!url.pathname.startsWith('/checkout')) return false;
     if (request.method !== 'GET') {
